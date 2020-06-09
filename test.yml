@@ -3,5 +3,5 @@
 
   tasks: 
     - debug:
-        msg: hostname is {{ansible_nodename}}
+        msg: "{{ansible_nodename}} successful"
          
