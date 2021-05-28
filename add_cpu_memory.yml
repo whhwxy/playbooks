@@ -17,7 +17,7 @@
         password: "{{vcenter_password}}"
         validate_certs: no
         name: "{{vm_name}}"
-        #datacenter: datastore1
+        datacenter: {{datacenter}}
       delegate_to: localhost
       register: facts
     - debug:
