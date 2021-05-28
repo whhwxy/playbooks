@@ -1,0 +1,37 @@
+---
+- hosts: localhost
+  gather_facts: no
+  vars:
+    need_add_mem: "{{need_add_mem}}"
+    need_add_cpu: "{{need_add_cpu}}"
+    total_mem: "{{facts.instance.hw_memtotal_mb + need_add_mem|int}}"
+    total_cpu: "{{facts.instance.hw_processor_count + need_add_cpu|int}}"
+    vcenter_host: "{{lookup('env','VMWARE_HOST')}}"
+    vcenter_username: "{{lookup('env','VMWARE_USER')}}"
+    vcenter_password: "{{lookup('env','VMWARE_PASSWORD')}}"
+  tasks:
+    - name: get vm facts
+      vmware_guest_facts:
+        hostname: "{{vcenter_host}}"
+        username: "{{vcenter_username}}"
+        password: "{{vcenter_password}}"
+        validate_certs: no
+        name: "{{vm_name}}"
+        datacenter: datastore1
+      delegate_to: localhost
+      register: facts
+    - debug:
+        msg: tatol_mem is {{total_mem}}, tatol_cpu is {{total_cpu}}
+
+    - name: adding vm cpu and memory
+      vmware_guest:
+        hostname: "{{vcenter_host}}"
+        username: "{{vcenter_username}}"
+        password: "{{vcenter_password}}"
+        validate_certs: no
+        name: "{{vm_name}}"
+        state: present
+        hardware:
+           num_cpus: "{{total_cpu}}"
+           memory_mb: "{{total_mem}}"
+      delegate_to: localhost
