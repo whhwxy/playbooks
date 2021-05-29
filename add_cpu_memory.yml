@@ -18,7 +18,7 @@
         validate_certs: no
         name: "{{vm_name}}"
         datacenter: "{{datacenter}}"
-      delegate_to: localhost
+      delegate_to: {{delegate_to_hostname}}
       register: facts
     - debug:
         msg: tatol_mem is {{total_mem}}, tatol_cpu is {{total_cpu}}
@@ -34,4 +34,4 @@
         hardware:
            num_cpus: "{{total_cpu}}"
            memory_mb: "{{total_mem}}"
-      delegate_to: localhost
+      delegate_to: {{delegate_to_hostname}}
