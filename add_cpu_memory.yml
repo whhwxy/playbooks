@@ -20,8 +20,8 @@
         datacenter: "{{datacenter}}"
       delegate_to: "{{delegate_to_hostname}}"
       register: facts
-    - debug:
-        msg: tatol_mem is {{total_mem}}, tatol_cpu is {{total_cpu}}
+   # - debug:
+   #     msg: tatol_mem is {{total_mem}}, tatol_cpu is {{total_cpu}}
 
     - name: adding vm cpu and memory
       vmware_guest:
