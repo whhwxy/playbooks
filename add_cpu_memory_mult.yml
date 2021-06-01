@@ -1,0 +1,13 @@
+---
+- hosts: "{{delegate_to}}"
+  gather_facts: no
+  vars:
+    server_paras: "{{server_paras}}"
+    vcenter_host: "{{lookup('env','VMWARE_HOST')}}"
+    vcenter_username: "{{lookup('env','VMWARE_USER')}}"
+    vcenter_password: "{{lookup('env','VMWARE_PASSWORD')}}"
+  tasks:
+    - include_tasks: create_cpu_mem.yml
+      with_items:
+        - "{{server_paras}}"
+
