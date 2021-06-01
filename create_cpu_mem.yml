@@ -1,29 +1,31 @@
 ---
-tasks:
-   - name: get vm facts
-     vmware_guest_facts:
-       hostname: "{{vcenter_host}}"
-       username: "{{vcenter_username}}"
-       password: "{{vcenter_password}}"
-       validate_certs: no
-       name: "{{item.vm_name}}"
-       datacenter: "{{item.datacenter}}"
-     delegate_to: "{{delegate_to}}"
-     register: facts
+- debug:
+    msg: "{{item.vm_name}},{{item.datacenter}},{{item.need_add_mem}},{{item.need_add_cpu}}"
 
-   - set_fact:
-       total_mem: "{{facts.instance.hw_memtotal_mb + item.need_add_mem|int}}"
-       total_cpu: "{{facts.instance.hw_processor_count + item.need_add_cpu|int}}"
+- name: get vm facts
+  vmware_guest_facts:
+    hostname: "{{vcenter_host}}"
+    username: "{{vcenter_username}}"
+    password: "{{vcenter_password}}"
+    validate_certs: no
+    name: "{{item.vm_name}}"
+    datacenter: "{{item.datacenter}}"
+  delegate_to: "{{delegate_to}}"
+  register: facts
 
-   - name: adding vm cpu and memory
-     vmware_guest:
-       hostname: "{{vcenter_host}}"
-       username: "{{vcenter_username}}"
-       password: "{{vcenter_password}}"
-       validate_certs: no
-       name: "{{item.vm_name}}"
-       state: present
-       hardware:
-          num_cpus: "{{total_cpu}}"
-          memory_mb: "{{total_mem}}"
-     delegate_to: "{{delegate_to}}"
+- set_fact:
+    total_mem: "{{facts.instance.hw_memtotal_mb + item.need_add_mem|int}}"
+    total_cpu: "{{facts.instance.hw_processor_count + item.need_add_cpu|int}}"
+
+- name: adding vm cpu and memory
+  vmware_guest:
+    hostname: "{{vcenter_host}}"
+    username: "{{vcenter_username}}"
+    password: "{{vcenter_password}}"
+    validate_certs: no
+    name: "{{item.vm_name}}"
+    state: present
+    hardware:
+       num_cpus: "{{total_cpu}}"
+       memory_mb: "{{total_mem}}"
+  delegate_to: "{{delegate_to}}"
