@@ -1,5 +1,5 @@
 ---
-- hosts: localhost
+- hosts: "{{delegate_to}}"
   gather_facts: no
   vars:
    # need_add_mem: "{{need_add_mem}}"
