@@ -1,0 +1,15 @@
+---
+- hosts: localhost
+  gather_facts: no
+  vars:
+   # need_add_mem: "{{need_add_mem}}"
+   # need_add_cpu: "{{need_add_cpu}}"
+    server_paras: "{{server_paras}}"
+   # total_mem: "{{facts.instance.hw_memtotal_mb + item.need_add_mem|int}}"
+   # total_cpu: "{{facts.instance.hw_processor_count + item.need_add_cpu|int}}"
+    vcenter_host: "{{lookup('env','VMWARE_HOST')}}"
+    vcenter_username: "{{lookup('env','VMWARE_USER')}}"
+    vcenter_password: "{{lookup('env','VMWARE_PASSWORD')}}"
+  tasks:
+    - include_tasks: create_cpu_mem.yml
+      with_items: "{{server_paras}}"
