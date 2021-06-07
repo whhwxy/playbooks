@@ -10,6 +10,16 @@
     vcenter_username: "{{lookup('env','VMWARE_USER')}}"
     vcenter_password: "{{lookup('env','VMWARE_PASSWORD')}}"
   tasks:
+    - name: stop VM
+      vmware_guest:
+        hostname: "{{vcenter_host}}"
+        username: "{{vcenter_username}}"
+        password: "{{vcenter_password}}"
+        validate_certs: no
+        name: test
+        state: poweredoff
+      delegate_to: "{{delegate_to_hostname}}"
+      
     - name: get vm facts
       vmware_guest_facts:
         hostname: "{{vcenter_host}}"
@@ -34,4 +44,14 @@
         hardware:
            num_cpus: "{{total_cpu}}"
            memory_mb: "{{total_mem}}"
+      delegate_to: "{{delegate_to_hostname}}"
+      
+    - name: start VM
+      vmware_guest:
+        hostname: "{{vcenter_host}}"
+        username: "{{vcenter_username}}"
+        password: "{{vcenter_password}}"
+        validate_certs: no
+        name: test
+        state: poweredon
       delegate_to: "{{delegate_to_hostname}}"
