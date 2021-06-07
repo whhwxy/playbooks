@@ -16,7 +16,7 @@
         username: "{{vcenter_username}}"
         password: "{{vcenter_password}}"
         validate_certs: no
-        name: test
+        name: "{{vm_name}}"
         state: poweredoff
       delegate_to: "{{delegate_to_hostname}}"
       
@@ -52,6 +52,6 @@
         username: "{{vcenter_username}}"
         password: "{{vcenter_password}}"
         validate_certs: no
-        name: test
+        name: "{{vm_name}}"
         state: poweredon
       delegate_to: "{{delegate_to_hostname}}"
