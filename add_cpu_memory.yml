@@ -18,7 +18,7 @@
         validate_certs: no
         name: "{{vm_name}}"
         state: poweredoff
-      delegate_to: "{{delegate_to_hostname}}"
+      delegate_to: "{{delegate_to}}"
       
     - name: get vm facts
       vmware_guest_facts:
@@ -28,7 +28,7 @@
         validate_certs: no
         name: "{{vm_name}}"
         datacenter: "{{datacenter}}"
-      delegate_to: "{{delegate_to_hostname}}"
+      delegate_to: "{{delegate_to}}"
       register: facts
    # - debug:
    #     msg: tatol_mem is {{total_mem}}, tatol_cpu is {{total_cpu}}
@@ -44,7 +44,7 @@
         hardware:
            num_cpus: "{{total_cpu}}"
            memory_mb: "{{total_mem}}"
-      delegate_to: "{{delegate_to_hostname}}"
+      delegate_to: "{{delegate_to}}"
       
     - name: start VM
       vmware_guest:
@@ -54,4 +54,4 @@
         validate_certs: no
         name: "{{vm_name}}"
         state: poweredon
-      delegate_to: "{{delegate_to_hostname}}"
+      delegate_to: "{{delegate_to}}"
