@@ -13,7 +13,17 @@
 - set_fact:
     total_mem: "{{facts.instance.hw_memtotal_mb + item.need_add_mem|int}}"
     total_cpu: "{{facts.instance.hw_processor_count + item.need_add_cpu|int}}"
-
+    
+- name: stop VM
+  vmware_guest:
+    hostname: "{{vcenter_host}}"
+    username: "{{vcenter_username}}"
+    password: "{{vcenter_password}}"
+    validate_certs: no
+    name: "{{vm_name}}"
+    state: poweredoff
+  delegate_to: "{{delegate_to}}"
+  
 - name: adding vm cpu and memory
   vmware_guest:
     hostname: "{{vcenter_host}}"
@@ -25,4 +35,14 @@
     hardware:
        num_cpus: "{{total_cpu}}"
        memory_mb: "{{total_mem}}"
+  delegate_to: "{{delegate_to}}"
+  
+- name: start VM
+  vmware_guest:
+    hostname: "{{vcenter_host}}"
+    username: "{{vcenter_username}}"
+    password: "{{vcenter_password}}"
+    validate_certs: no
+    name: "{{vm_name}}"
+    state: poweredon
   delegate_to: "{{delegate_to}}"
