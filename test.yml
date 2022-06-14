@@ -1,8 +1,10 @@
 ---
 - hosts: all
   tasks:
-    - ping:
+    - win_ping:
       when: ansible_os_family=="Windows"
+    - ping:
+      when: ansible_os_family=="RedHat"
     - debug:
         msg: "{{ansible_nodename}} successful"
          
